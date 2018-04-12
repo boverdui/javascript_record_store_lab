@@ -1,4 +1,5 @@
 const assert = require('assert');
+const Record = require('../models/record.js');
 const RecordStore = require('../models/recordstore.js');
 
 describe('RecordStore', function() {
@@ -6,7 +7,8 @@ describe('RecordStore', function() {
   let recordstore;
 
   beforeEach(function() {
-    recordstore = new RecordStore('The Black Circle', 'Edinburgh', 1000);
+    record = new Record("Muse", "Origin of Symmetry", "Alternative Rock", 12.99);
+    recordstore = new RecordStore('The Black Circle', 'Edinburgh', [record], 1000);
   });
 
   it('should have a name', function() {
@@ -19,15 +21,14 @@ describe('RecordStore', function() {
     assert.strictEqual(actual, 'Edinburgh');
   });
 
-  it('should have an empty inventory', function() {
-    const actual = recordstore.inventory;
-    assert.deepStrictEqual(actual, []);
-  });
-
-
   it('should have a balance', function() {
     const actual = recordstore.balance;
     assert.strictEqual(actual, 1000);
   });
-  
+
+  it('should have a record in the inventory', function() {
+    const actual = recordstore.inventory;
+    assert.deepStrictEqual(actual, [record]);
+  });
+
 });
