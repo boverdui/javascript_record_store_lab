@@ -7,8 +7,10 @@ describe('RecordStore', function() {
   let recordstore;
 
   beforeEach(function() {
-    record = new Record("Muse", "Origin of Symmetry", "Alternative Rock", 12.99);
-    recordstore = new RecordStore('The Black Circle', 'Edinburgh', [record], 1000);
+    record1 = new Record("Muse", "Origin of Symmetry", "Alternative Rock", 12.99);
+    record2 = new Record("Bruce Springsteen", "Born to Run", "Rock", 11.99);
+    record3 = new Record("Bruce Springsteen", "The River", "Rock", 19.99);
+    recordstore = new RecordStore('The Black Circle', 'Edinburgh', [record1, record2, record3], 1000);
   });
 
   it('should have a name', function() {
@@ -26,9 +28,25 @@ describe('RecordStore', function() {
     assert.strictEqual(actual, 1000);
   });
 
-  it('should have a record in the inventory', function() {
+  it('should have records in the inventory', function() {
     const actual = recordstore.inventory;
-    assert.deepStrictEqual(actual, [record]);
+    assert.deepStrictEqual(actual, [record1, record2, record3]);
+  });
+
+  it('should be able to sell a record and adjusts the store balance to account for the record being sold', function() {
+    recordstore.sellRecord(record1);
+    assert.deepStrictEqual(recordstore.inventory, [record2, record3]);
+    assert.strictEqual(recordstore.balance, 1012.99);
+  });
+
+  it('should be able to report the value of all records in the store inventory', function() {
+    const actual = 44.97;
+    assert.deepStrictEqual(actual, recordstore.calculateValueInventory())
+  });
+
+  it('should be able to view all records of a certain genre', function() {
+    const actual = [record2, record3];
+    assert.deepStrictEqual(actual, recordstore.viewByGenre("Rock"))
   });
 
 });
